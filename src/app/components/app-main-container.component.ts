@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../store/services/api.service';
 import { Launch } from './../store/models/launch';
+import { Rocket } from './../store/models/rocket';
 
 @Component({
     selector: 'app-main-container',
@@ -39,7 +40,8 @@ export class ContainerFilterComponent implements OnInit {
     private FilterData(data: Array<Launch>, search: number): Array<Launch> {
         let dataFiltered: Array<Launch>;
         if (this.searchCriteria === '1') {
-            dataFiltered = data.filter(l => l.lsp && l.lsp.id === search);
+            dataFiltered = data.filter(l => (l.lsp && l.lsp.id === search)
+            || (l.rocket && l.rocket.agencies && l.rocket.agencies.length > 0 && l.rocket.agencies.filter(m => m.id === search)));
         } else if (this.searchCriteria === '2') {
             dataFiltered = data.filter(l => l.status === search);
         } else {
